@@ -1,31 +1,21 @@
 from GameLibrary import GameLibrary
-import json
-import os
+from StoreLibrary import StoreLibrary
 
-gameList = []
+menuOption = ""
 
-file = open('Library.json', mode='r')
-jsonFile = json.loads(file.read())
-file.close()
+while menuOption != "3":
+    print("Bonjour user, veuillez choisir une option parmis les suivantes :")
+    print("1 - Bibliothèque locale")
+    print("2 - Magasin pas en ligne")
+    print("3 - Quitter")
 
-print("Bonjour user, veuillez choisir une option parmis les suivantes :")
-print("1 - Afficher la liste des jeux")
+    menuOption = input("Réponse (entre 1 et 3) : ")
+    print("\n", end='')
 
-option = input("Réponse (entre 1 et 1) : ")
-print("\n")
+    if menuOption == "1":
+        localLibrary = GameLibrary()
+        localLibrary.menu()
 
-if option == "1":
-    print("Liste des jeux : ")
-    gameLibrary = GameLibrary()
-
-    gameList = gameLibrary.getGameList()
-
-    index = 1
-    for game in gameList:
-        print(str(index), game.nom)
-        index += 1
-
-    option = input("Réponse (entre 1 et " + str(index) + ") : ")
-    print("\n")
-
-    gameList[int(option) - 1].printDetails()
+    if menuOption == "2":
+        storeLibrary = StoreLibrary()
+        storeLibrary.menu()

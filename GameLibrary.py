@@ -1,30 +1,42 @@
-from JsonManager import JsonManager
-from Game import Game
+from GameManager import GameManager
 
-class GameLibrary:
+class GameLibrary(GameManager):
     def __init__(self):
-        self.json = JsonManager("Library.json")
-        self.gameLibrary = []
+        super().__init__("LocalLibrary.json", False)
 
-        for game in self.json.jsonFile["games"]:
-            self.gameLibrary.append(Game(game["nom"], game["tag"], game["image"]))
+    def menu(self):
+        menuOption = 0
+        while menuOption != 3:
+            print("Que voulez-vous faire :")
+            print("1 - Détails des jeux")
+            print("2 - Supprimer un jeu")
+            print("3 - Quitter")
 
-    def deleteGame(self, tag: str):
-        for i in range(0, len(self.gameLibrary) - 1):
-            if self.gameLibrary[i].verifyTag(tag):
-                del self.gameLibrary[i]
-                break
+            menuOption = int(input("Réponse (entre 1 et 3) : "))
+            print("\n", end='')
 
-    def getGameList(self):
-        return self.gameLibrary
+            if menuOption != 3:
+                print("Liste des jeux de la bibliothèque locale : ")
 
-    def addGame(self, nom: str, tag: str, image: str):
-        alreadyExist = False
+                gamechoice = 0
+                index = 1
+                while gamechoice != str(index):
+                    index = 1
+                    for game in self.gameLibrary:
+                        print(str(index), game.nom)
+                        index += 1
+                    print(str(index), "Retour")
 
-        for i in range(0, len(self.gameLibrary) - 1):
-            if self.gameLibrary[i].verifyTag(tag):
-                print("Ce jeu existe déjà. Tag : ", tag)
-                alreadyExist = True
+                    gamechoice = input("Réponse (entre 1 et " + str(index) + ") : ")
 
-        if not alreadyExist:
-            self.gameLibrary.append(Game(nom, tag, image))
+                    if gamechoice != str(index):
+                        print("\n", end='')
+
+                        if menuOption == 1:
+                            print(list(self.gameLibrary)[int(gamechoice) - 1])
+                        elif menuOption == 2:
+                            self.deleteGame(list(self.gameLibrary)[int(gamechoice) - 1].tag)
+                            print("Jeu supprimé")
+
+                    print("\n", end='')
+
